@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BPOptima — Decision Trace Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body data-role="cro">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg class="brand-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M6 10h8M10 6v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="brand-name">BPOptima</span>
+      <span class="brand-sep">/</span>
+      <span class="brand-sub">GroundSet</span>
+    </div>
+    <div class="role-toggle" role="tablist">
+      <span class="role-label">View as:</span>
+      <button class="role-btn active" data-role="cro">Chief Risk Officer</button>
+      <button class="role-btn" data-role="cto">CTO</button>
+      <button class="role-btn" data-role="eng">Engineer</button>
+    </div>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="intro-badge">Interactive Decision Trace</div>
+  <h1>The same rule. Two claims.<br/>One clear line.</h1>
+  <p class="role-copy" id="intro-copy"
+     data-cro="GroundSet doesn't guess when it isn't sure. Every outcome traces back to a rule your team owns — and every borderline case is routed to a human, on record."
+     data-cto="Same pipeline, same rule engine, two inputs. Confidence thresholds are configurable per rule. Nothing here is a model's guess — it's a deterministic evaluation."
+     data-eng="Both claims run evaluate(rule, extraction). Claim B fails the confidence gate on cost_estimate and short-circuits to escalation before the approval branch executes."></p>
+  <button class="replay-btn" id="replay-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 5-10 5V3z" fill="currentColor"/></svg>
+    Run Pipeline
+  </button>
+</section>
+
+<!-- ═══ DECISION MOMENT ═══ -->
+<section class="decision-moment" id="decision-moment">
+  <div class="dm-header">
+    <h2>The Rule That Changed Everything</h2>
+    <p>Rule #14, Condition 3 — the same threshold, two different confidence scores</p>
+  </div>
+  <div class="dm-grid">
+    <div class="dm-rule">
+      <div class="dm-rule-label">Rule #14 · Condition 3</div>
+      <code class="dm-rule-text">extraction_confidence("estimated_cost") &ge; 0.80</code>
+    </div>
+    <div class="dm-compare">
+      <div class="dm-col dm-col-pass">
+        <div class="dm-col-head">Claim A</div>
+        <div class="dm-score">0.96</div>
+        <div class="dm-icon dm-icon-pass">✓</div>
+        <div class="dm-outcome-label">Auto-Approved</div>
+      </div>
+      <div class="dm-divider">
+        <div class="dm-vs">vs</div>
+      </div>
+      <div class="dm-col dm-col-fail">
+        <div class="dm-col-head">Claim B</div>
+        <div class="dm-score">0.64</div>
+        <div class="dm-icon dm-icon-fail">✗</div>
+        <div class="dm-outcome-label">Escalated to Human</div>
+      </div>
+    </div>
+    <div class="dm-explanation">
+      Escalated because the extracted cost estimate confidence (<strong>0.64</strong>) fell below the required threshold (<strong>0.80</strong>). The system refused to guess — this is the audit trail proving it.
+    </div>
+
+    <!-- Mini Pipeline Animation -->
+    <div class="mini-pipeline" id="mini-pipeline">
+      <button class="mini-replay-btn" id="mini-replay-btn">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 5-10 5V3z" fill="currentColor"/></svg>
+        Replay Decision Trace
+      </button>
+      <div class="mini-steps" id="mini-steps">
+        <div class="mini-step" data-mini="1"><span class="mini-dot"></span><span class="mini-text">Evidence Uploaded</span></div>
+        <div class="mini-arrow">↓</div>
+        <div class="mini-step" data-mini="2"><span class="mini-dot"></span><span class="mini-text">OCR Extraction</span></div>
+        <div class="mini-arrow">↓</div>
+        <div class="mini-step" data-mini="3"><span class="mini-dot"></span><span class="mini-text">Confidence Calculated</span></div>
+        <div class="mini-arrow">↓</div>
+        <div class="mini-step" data-mini="4"><span class="mini-dot"></span><span class="mini-text">Rule #14 Evaluated</span></div>
+        <div class="mini-arrow">↓</div>
+        <div class="mini-step" data-mini="5"><span class="mini-dot"></span><span class="mini-text">Decision Issued</span></div>
+        <div class="mini-arrow">↓</div>
+        <div class="mini-step" data-mini="6"><span class="mini-dot"></span><span class="mini-text">Audit Saved</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLAIMS ═══ -->
+<main class="claims">
+
+<!-- CLAIM A -->
+<article class="claim-card" data-claim="A" data-outcome="approved">
+  <div class="claim-head">
+    <div class="claim-head-left">
+      <span class="claim-id">CLM-88213</span>
+      <span class="claim-label">Claim A</span>
+    </div>
+    <span class="badge badge-approved">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Auto-Approved
+    </span>
+  </div>
+  <div class="claim-meta">
+    <span class="meta-tag">Windshield damage</span>
+    <span class="meta-tag meta-cost">$1,240</span>
+  </div>
+
+  <div class="pipeline">
+    <!-- Stage 1 -->
+    <div class="stage-group" data-step="1">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">1</span>
+        <span class="stage-label">Evidence Ingested</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="evidence-grid">
+          <div class="evidence-item">📄 claim_form.pdf</div>
+          <div class="evidence-item">🖼 damage_photo.jpg</div>
+        </div>
+        <p class="stage-note">2 files received · 3 fields targeted for extraction</p>
+        <!-- CTO view -->
+        <div class="role-block role-cto">
+          <pre class="code-block">POST /v1/ingest
+Content-Type: multipart/form-data
+X-Client-ID: acm-ins-9
+Latency: 120ms · Status: 200</pre>
+        </div>
+        <!-- Engineer view -->
+        <div class="role-block role-eng">
+          <pre class="code-block">{
+  "ingest_id": "ing_a1b2c3",
+  "files": ["claim_form.pdf", "damage_photo.jpg"],
+  "ocr_engine": "groundset-v2.1",
+  "timestamp": "2026-07-15T09:11:58Z"
+}</pre>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="stage-group" data-step="2">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">2</span>
+        <span class="stage-label">Fields Extracted</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <table class="field-table">
+          <thead><tr><th>Field</th><th>Value</th><th>Confidence</th></tr></thead>
+          <tbody>
+            <tr><td><code>damage_type</code></td><td>windshield</td><td><span class="conf conf-high">0.99</span></td></tr>
+            <tr><td><code>estimated_cost</code></td><td>$1,240</td><td><span class="conf conf-high">0.96</span></td></tr>
+            <tr><td><code>policy_number</code></td><td>POL-88213</td><td><span class="conf conf-high">0.98</span></td></tr>
+          </tbody>
+        </table>
+        <!-- CTO view -->
+        <div class="role-block role-cto">
+          <pre class="code-block">Extraction Model: groundset-v2.1
+Processing: 340ms · Grounding: source-linked
+All fields above confidence threshold (0.80)</pre>
+        </div>
+        <!-- Engineer view -->
+        <div class="role-block role-eng">
+          <pre class="code-block">{
+  "extractions": [
+    {"field":"damage_type","value":"windshield","score":0.99,"ref":"form:L12"},
+    {"field":"estimated_cost","value":1240,"score":0.96,"ref":"img:region_0"},
+    {"field":"policy_number","value":"POL-88213","score":0.98,"ref":"form:L3"}
+  ]
+}</pre>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="stage-group" data-step="3">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">3</span>
+        <span class="stage-label">Rule Evaluated</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <pre class="rule-block"><code><span class="rule-kw">RULE</span> #14 · Claims Policy v3.2 · <span class="rule-dim">client-owned</span>
+
+<span class="rule-kw">IF</span>   damage_type       = <span class="rule-str">"windshield"</span>       <span class="rule-check">✓</span>
+<span class="rule-kw">AND</span>  estimated_cost    &lt; <span class="rule-num">$1,500</span>             <span class="rule-check">✓</span>
+<span class="rule-kw">AND</span>  cost_confidence  &ge; <span class="rule-num">0.80</span>              <span class="rule-check">✓ 0.96</span>
+<span class="rule-kw">THEN</span> → auto_approve</code></pre>
+        <div class="rule-result rule-pass">✓ All 3 conditions met — rule fires.</div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="stage-group" data-step="4">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">4</span>
+        <span class="stage-label">Decision Issued</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="decision-box decision-approved">
+          <strong>Approved</strong> — all conditions of Rule #14 met. Disbursement queued.
+        </div>
+        <!-- CRO view -->
+        <div class="role-block role-cro">
+          <p class="role-note">No liability created. Decision fully automated under policy v3.2. Human review not triggered.</p>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div class="stage-group" data-step="5">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">5</span>
+        <span class="stage-label">Audit Logged</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="audit-entry">
+          <div class="audit-row"><span class="audit-key">Timestamp</span><span class="audit-val">2026-07-15 09:12:04 UTC</span></div>
+          <div class="audit-row"><span class="audit-key">Rule</span><span class="audit-val">#14 v3.2</span></div>
+          <div class="audit-row"><span class="audit-key">Outcome</span><span class="audit-val audit-val-approved">Approved</span></div>
+          <div class="audit-row"><span class="audit-key">Trace ID</span><span class="audit-val"><code>tr_a1b2c3d4e5</code></span></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</article>
+
+<!-- CLAIM B -->
+<article class="claim-card" data-claim="B" data-outcome="escalated">
+  <div class="claim-head">
+    <div class="claim-head-left">
+      <span class="claim-id">CLM-88214</span>
+      <span class="claim-label">Claim B</span>
+    </div>
+    <div class="badge-group">
+      <span class="badge badge-escalated">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 3v4M6 9h.005" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Escalated — by design
+      </span>
+      <span class="badge-reason">Cost confidence 0.64 &lt; threshold 0.80</span>
+    </div>
+  </div>
+  <div class="claim-meta">
+    <span class="meta-tag">Windshield damage</span>
+    <span class="meta-tag meta-cost">$1,480</span>
+    <span class="meta-tag meta-warn">⚠ Partial image glare</span>
+  </div>
+
+  <div class="pipeline">
+    <!-- Stage 1 -->
+    <div class="stage-group" data-step="1">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">1</span>
+        <span class="stage-label">Evidence Ingested</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="evidence-grid">
+          <div class="evidence-item">📄 claim_form.pdf</div>
+          <div class="evidence-item evidence-warn">🖼 damage_photo.jpg <span class="evidence-flag">GLARE</span></div>
+        </div>
+        <p class="stage-note">2 files received · Image quality flag raised on damage_photo.jpg</p>
+        <div class="role-block role-cto">
+          <pre class="code-block">POST /v1/ingest
+Quality check: WARN on damage_photo.jpg (glare_score: 0.38)
+Processing continues — quality flags propagate to extraction confidence.</pre>
+        </div>
+        <div class="role-block role-eng">
+          <pre class="code-block">{
+  "ingest_id": "ing_d4e5f6",
+  "quality_flags": [
+    {"file":"damage_photo.jpg","issue":"partial_glare","region":"center","score":0.38}
+  ]
+}</pre>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="stage-group" data-step="2">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">2</span>
+        <span class="stage-label">Fields Extracted</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <table class="field-table">
+          <thead><tr><th>Field</th><th>Value</th><th>Confidence</th></tr></thead>
+          <tbody>
+            <tr><td><code>damage_type</code></td><td>windshield</td><td><span class="conf conf-high">0.99</span></td></tr>
+            <tr class="row-flagged"><td><code>estimated_cost</code></td><td>$1,480</td><td><span class="conf conf-med">0.64 ⚠</span></td></tr>
+            <tr><td><code>policy_number</code></td><td>POL-88214</td><td><span class="conf conf-high">0.97</span></td></tr>
+          </tbody>
+        </table>
+        <div class="flag-note">
+          ⚠ <code>estimated_cost</code> confidence downgraded: source image partially obscured (glare on damage area). The system flagged its own uncertainty.
+        </div>
+        <div class="role-block role-eng">
+          <pre class="code-block">{
+  "field": "estimated_cost",
+  "raw_score": 0.64,
+  "threshold": 0.80,
+  "degradation_reason": "source_region_occluded",
+  "source_ref": "img:region_0"
+}</pre>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="stage-group" data-step="3">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">3</span>
+        <span class="stage-label">Rule Evaluated</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <pre class="rule-block"><code><span class="rule-kw">RULE</span> #14 · Claims Policy v3.2 · <span class="rule-dim">client-owned</span>
+
+<span class="rule-kw">IF</span>   damage_type       = <span class="rule-str">"windshield"</span>       <span class="rule-check">✓</span>
+<span class="rule-kw">AND</span>  estimated_cost    &lt; <span class="rule-num">$1,500</span>             <span class="rule-check">✓</span>
+<span class="rule-kw">AND</span>  cost_confidence  &ge; <span class="rule-num">0.80</span>              <span class="rule-fail">✗ 0.64</span>
+<span class="rule-kw">THEN</span> → auto_approve
+<span class="rule-kw">ELSE</span> → escalate_to_reviewer</code></pre>
+        <div class="rule-result rule-escalate">✗ Condition 3 failed — confidence gate. Short-circuits to ELSE.</div>
+        <div class="role-block role-cro">
+          <p class="role-note">The system did not invent an outcome. It identified its own uncertainty and deferred to your team — exactly as Rule #14 requires.</p>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="stage-group" data-step="4">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">4</span>
+        <span class="stage-label">Decision Issued</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="decision-box decision-escalated">
+          <strong>Escalated</strong> — cost confidence (<code>0.64</code>) below threshold (<code>0.80</code>).<br/>
+          <span class="decision-detail">Routed to <strong>Priya S.</strong>, Claims Reviewer (Tier 2). The system did not auto-decide.</span>
+        </div>
+        <div class="role-block role-cto">
+          <pre class="code-block">Routing: assignment-rules/tier2
+Assigned: priya.s@client.com
+SLA: 4 hours · Fallback: claims-pool-tier2
+Thresholds configurable at: /settings/rules/14/conditions</pre>
+        </div>
+        <div class="role-block role-eng">
+          <pre class="code-block">{
+  "action": "escalate",
+  "assigned_to": "priya.s@client.com",
+  "sla_hours": 4,
+  "fallback_pool": "claims-pool-tier2",
+  "gate_failed": "extraction_confidence",
+  "field": "estimated_cost",
+  "actual": 0.64,
+  "required": 0.80
+}</pre>
+        </div>
+      </div></div>
+      <div class="stage-connector"></div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div class="stage-group" data-step="5">
+      <button class="stage" aria-expanded="false">
+        <span class="stage-num">5</span>
+        <span class="stage-label">Audit Logged</span>
+        <svg class="stage-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="stage-panel"><div class="stage-panel-inner">
+        <div class="audit-entry">
+          <div class="audit-row"><span class="audit-key">Timestamp</span><span class="audit-val">2026-07-15 09:12:11 UTC</span></div>
+          <div class="audit-row"><span class="audit-key">Rule</span><span class="audit-val">#14 v3.2</span></div>
+          <div class="audit-row"><span class="audit-key">Outcome</span><span class="audit-val audit-val-escalated">Escalated</span></div>
+          <div class="audit-row"><span class="audit-key">Reason</span><span class="audit-val">confidence_gate_failed (estimated_cost: 0.64 &lt; 0.80)</span></div>
+          <div class="audit-row"><span class="audit-key">Assigned</span><span class="audit-val">Priya S.</span></div>
+          <div class="audit-row"><span class="audit-key">Trace ID</span><span class="audit-val"><code>tr_f6g7h8i9j0</code></span></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</article>
+
+</main>
+
+<footer class="footer-insight">
+  <div class="footer-inner role-copy" id="footer-copy"
+    data-cro="Both outcomes were on record before a human ever opened the file. Nothing was decided outside a rule your compliance team wrote, versioned, and owns."
+    data-cto="This trace is the same JSON your team pulls via API. The UI is a view on it, not the source of truth. Confidence thresholds, routing, and SLAs are all configurable per client."
+    data-eng='{"trace_diff":{"divergence":"stage_3","field":"estimated_cost","claim_a":{"score":0.96,"result":"pass"},"claim_b":{"score":0.64,"result":"fail"},"threshold":0.80}}'>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
